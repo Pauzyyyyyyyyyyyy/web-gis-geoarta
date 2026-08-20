@@ -9,137 +9,35 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        header {
-            background-color: #1a365d;
-            color: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-        header h1 {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-        header p {
-            font-size: 0.85rem;
-            color: #cbd5e0;
-        }
-        #map {
-            flex: 1;
-            width: 100%;
-            z-index: 1;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { display: flex; flex-direction: column; height: 100vh; }
+        header { background-color: #1a365d; color: white; padding: 15px 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 1000; }
+        header h1 { font-size: 1.4rem; margin-bottom: 4px; }
+        header p { font-size: 0.85rem; color: #cbd5e0; }
+        #map { flex: 1; width: 100%; z-index: 1; }
         
         /* Popup Styling */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            padding: 5px;
-        }
-        .popup-card {
-            width: 250px;
-        }
-        .popup-card h3 {
-            color: #2b6cb0;
-            font-size: 1rem;
-            margin-bottom: 6px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 4px;
-        }
-        .popup-info {
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .popup-info strong {
-            color: #4a5568;
-        }
-        .popup-img-container {
-            width: 100%;
-            height: 140px;
-            background-color: #edf2f7;
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed #cbd5e0;
-        }
-        .popup-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .img-placeholder {
-            font-size: 0.75rem;
-            color: #718096;
-            text-align: center;
-            padding: 10px;
-        }
-        .badge-year {
-            display: inline-block;
-            background-color: #3182ce;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-bottom: 6px;
-        }
+        .leaflet-popup-content-wrapper { border-radius: 8px; padding: 5px; }
+        .popup-card { width: 250px; }
+        .popup-card h3 { color: #2b6cb0; font-size: 1rem; margin-bottom: 6px; border-bottom: 2px solid #e2e8f0; padding-bottom: 4px; }
+        .popup-info { font-size: 0.85rem; margin-bottom: 10px; line-height: 1.4; }
+        .popup-info strong { color: #4a5568; }
+        .popup-img-container { width: 100%; height: 140px; background-color: #edf2f7; border-radius: 6px; overflow: hidden; display: flex; align-items: center; justify-content: center; border: 1px dashed #cbd5e0; }
+        .popup-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .img-placeholder { font-size: 0.75rem; color: #718096; text-align: center; padding: 10px; }
+        .badge-year { display: inline-block; background-color: #3182ce; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; margin-bottom: 6px; }
 
         /* Custom SVG Pin Marker Styling */
-        .custom-pin-icon {
-            background: transparent;
-            border: none;
-        }
-        .pin-svg {
-            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.4));
-            transition: transform 0.2s ease;
-        }
-        .pin-svg:hover {
-            transform: scale(1.15);
-        }
+        .custom-pin-icon { background: transparent; border: none; }
+        .pin-svg { filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.4)); transition: transform 0.2s ease; }
+        .pin-svg:hover { transform: scale(1.15); }
 
         /* Legenda Styling (Kanan Atas) */
-        .legend {
-            background: white;
-            padding: 12px 15px;
-            line-height: 20px;
-            color: #333;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            font-size: 0.82rem;
-        }
-        .legend h4 {
-            margin: 0 0 8px 0;
-            font-size: 0.9rem;
-            color: #1a365d;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 4px;
-        }
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        .legend-item:last-child {
-            margin-bottom: 0;
-        }
-        .legend-pin-icon {
-            width: 16px;
-            height: 20px;
-            margin-right: 8px;
-            display: inline-block;
-        }
+        .legend { background: white; padding: 12px 15px; line-height: 20px; color: #333; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); font-size: 0.82rem; }
+        .legend h4 { margin: 0 0 8px 0; font-size: 0.9rem; color: #1a365d; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+        .legend-item { display: flex; align-items: center; margin-bottom: 6px; }
+        .legend-item:last-child { margin-bottom: 0; }
+        .legend-pin-icon { width: 16px; height: 20px; margin-right: 8px; display: inline-block; }
     </style>
 </head>
 <body>
@@ -156,66 +54,28 @@
 
     <script>
         // ============================================================
-        // FOTO GOOGLE DRIVE - AKSES OTOMATIS BERDASARKAN NAMA FILE
-        // Folder:
-        // https://drive.google.com/drive/folders/1LNFFkxzlmtvb52aM7-VAWbtIwhigg0Qa
-        //
-        // HTML tidak dapat membaca isi folder Google Drive secara langsung.
-        // Karena itu script ini mengambil daftar file melalui Google Apps Script.
-        // Setelah Apps Script dipasang, foto dicari berdasarkan nilai "foto"
-        // pada dataPengalaman, lalu ditampilkan sebagai gambar langsung.
+        // CARA KERJA: 
+        // Anda hanya perlu mengisi "driveId" pada array dataPengalaman di bawah.
+        // Contoh ID: "1A2B3C4D5E6F7G8H9I0J"
         // ============================================================
 
-        const DRIVE_FOLDER_ID = "1LNFFkxzlmtvb52aM7-VAWbtIwhigg0Qa";
-
-        // Masukkan URL Web App Google Apps Script di sini.
-        // Contoh: https://script.google.com/macros/s/XXXXXXXX/exec
-        const DRIVE_API_URL = "PASTE_URL_WEB_APP_APPS_SCRIPT_DI_SINI";
-
-        let driveFiles = {};
-
-        async function loadDriveFiles() {
-            if (!DRIVE_API_URL || DRIVE_API_URL.includes("PASTE_URL_")) {
-                console.warn("URL Google Apps Script belum diisi.");
-                return;
-            }
-
-            try {
-                const response = await fetch(
-                    `${DRIVE_API_URL}?folderId=${encodeURIComponent(DRIVE_FOLDER_ID)}`,
-                    { cache: "no-store" }
-                );
-
-                if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-                const files = await response.json();
-
-                driveFiles = {};
-                files.forEach(file => {
-                    if (file.name && file.url) {
-                        driveFiles[file.name.trim().toLowerCase()] = file.url;
-                    }
-                });
-
-                updateAllPhotos();
-            } catch (error) {
-                console.error("Gagal mengambil daftar foto Google Drive:", error);
-            }
+        // Fungsi untuk mengubah ID Google Drive menjadi URL Gambar yang bisa ditampilkan
+        // METODE BARU: Menggunakan link thumbnail yang diizinkan oleh Google
+        function getDriveImageUrl(driveId) {
+            if (!driveId || driveId === "") return "";
+            // Format URL thumbnail publik yang diizinkan untuk website luar
+            return `https://drive.google.com/thumbnail?id=${driveId}&sz=w400`;
         }
 
-        function getDrivePhotoUrl(filename) {
-            if (!filename) return "";
-            return driveFiles[filename.trim().toLowerCase()] || "";
-        }
-
+        // Fungsi membuat HTML Foto untuk Popup
         function makePhotoHTML(item) {
-            const photoUrl = getDrivePhotoUrl(item.foto);
+            const photoUrl = getDriveImageUrl(item.driveId);
 
             if (!photoUrl) {
                 return `
                     <div class="popup-img-container">
                         <div class="img-placeholder">
-                            🖼️ <i>Foto belum ditemukan di Google Drive</i>
+                            🖼️ <i>Foto belum diisi (Isi driveId)</i>
                         </div>
                     </div>`;
             }
@@ -223,18 +83,11 @@
             return `
                 <div class="popup-img-container">
                     <img src="${photoUrl}"
-                         alt="${item.pekerjaan}"
+                         alt="Foto Pekerjaan"
                          loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class="img-placeholder">🖼️ <i>Gagal memuat foto</i></div>'">
+                         style="width: 100%; height: 100%; object-fit: cover;"
+                         onerror="this.parentElement.innerHTML='<div class=\'img-placeholder\'>🖼️ <i>Gagal memuat foto (Cek ID)</i></div>'">
                 </div>`;
-        }
-
-        function updateAllPhotos() {
-            dataPengalaman.forEach(item => {
-                if (item.marker) {
-                    item.marker.setPopupContent(createPopupContent(item));
-                }
-            });
         }
 
         // Initialize Map centered in Indonesia
@@ -285,86 +138,89 @@
             });
         }
 
-        // Data Pekerjaan dari Company Profile PT Geoarta Sinar Mandala (2020-2025)
-        // "foto" = nama deskriptif file (buat referensi kamu waktu upload)
-        // "driveId" = ID file Google Drive, ISI SETELAH FOTO DIUPLOAD
+        // ============================================================
+        // DATA PEKERJAAN
+        // PETUNJUK: GANTI "driveId" dengan ID file foto di Google Drive Anda
+        // Contoh: driveId: "1A2B3C4D5E6F7G8H9I0J"
+        // Biarkan kosong ("") jika belum ada fotonya.
+        // ============================================================
         const dataPengalaman = [
 
             // --- 2020 ---
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Wates, Kulon Progo", instansi: "Rekan", lat: -7.861, lng: 110.158, foto: "pengukuran topografi di Wates, Kulon Progo 2020.png", driveId: "" },
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Godean, Sleman", instansi: "Rekan", lat: -7.768, lng: 110.294, foto: "pengukuran topografi di Godean, Sleman 2020.png", driveId: "" },
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Bengawan Solo, Sukoharjo", instansi: "Tekling UPN", lat: -7.683, lng: 110.83, foto: "pengukuran topografi di Bengawan Solo, Sukoharjo 2020.png", driveId: "" },
-            { tahun: 2020, pekerjaan: "Foto Udara", lokasi: "Banyu Urip, Purworejo", instansi: "Rekan", lat: -7.794, lng: 109.972, foto: "pemotretan udara di Banyu Urip, Purworejo 2020.png", driveId: "" },
-            { tahun: 2020, pekerjaan: "Video", lokasi: "Nusa Tenggara Barat", instansi: "Dosen Bandung", lat: -8.652, lng: 117.361, foto: "pembuatan video dokumentasi pekerjaan di Nusa Tenggara Barat 2020.png", driveId: "" },
+            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Wates, Kulon Progo", instansi: "Rekan", lat: -7.861, lng: 110.158, driveId: "" },
+            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Godean, Sleman", instansi: "Rekan", lat: -7.768, lng: 110.294, driveId: "" },
+            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Bengawan Solo, Sukoharjo", instansi: "Tekling UPN", lat: -7.683, lng: 110.83, driveId: "" },
+            { tahun: 2020, pekerjaan: "Foto Udara", lokasi: "Banyu Urip, Purworejo", instansi: "Rekan", lat: -7.794, lng: 109.972, driveId: "" },
+            { tahun: 2020, pekerjaan: "Video", lokasi: "Nusa Tenggara Barat", instansi: "Dosen Bandung", lat: -8.652, lng: 117.361, driveId: "" },
 
             // --- 2021 ---
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Tembalang, Semarang", instansi: "BEE HAVE Drone", lat: -7.051, lng: 110.439, foto: "pemotretan udara di Tembalang, Semarang 2021.png", driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Muara Teweh, Kalteng", instansi: "Greenline", lat: -0.957, lng: 114.896, foto: "pemotretan udara di Muara Teweh, Kalteng 2021.png", driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Buhud, Kalteng", instansi: "Rekan", lat: -1.02, lng: 114.6, foto: "pemotretan udara di Buhud, Kalteng 2021.png", driveId: "" },
-            { tahun: 2021, pekerjaan: "Build USV", lokasi: "Balai Pantai, Bali", instansi: "PUPR Balai Pantai", lat: -8.683, lng: 115.215, foto: "pembuatan dan pengujian USV (Unmanned Surface Vehicle) di Balai Pantai, Bali 2021.png", driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Pongkor, Bogor", instansi: "ANTAM", lat: -6.662, lng: 106.568, foto: "pemotretan udara di Pongkor, Bogor 2021.png", driveId: "" },
-            { tahun: 2021, pekerjaan: "Topografi", lokasi: "Sungai Ciliwung, Jakarta", instansi: "Rekan", lat: -6.229, lng: 106.84, foto: "pengukuran topografi di Sungai Ciliwung, Jakarta 2021.png", driveId: "" },
+            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Tembalang, Semarang", instansi: "BEE HAVE Drone", lat: -7.051, lng: 110.439, driveId: "" },
+            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Muara Teweh, Kalteng", instansi: "Greenline", lat: -0.957, lng: 114.896, driveId: "" },
+            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Buhud, Kalteng", instansi: "Rekan", lat: -1.02, lng: 114.6, driveId: "" },
+            { tahun: 2021, pekerjaan: "Build USV", lokasi: "Balai Pantai, Bali", instansi: "PUPR Balai Pantai", lat: -8.683, lng: 115.215, driveId: "" },
+            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Pongkor, Bogor", instansi: "ANTAM", lat: -6.662, lng: 106.568, driveId: "" },
+            { tahun: 2021, pekerjaan: "Topografi", lokasi: "Sungai Ciliwung, Jakarta", instansi: "Rekan", lat: -6.229, lng: 106.84, driveId: "" },
 
             // --- 2022 ---
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Candi Borobudur", instansi: "UGM", lat: -7.607, lng: 110.203, foto: "pemotretan udara di Candi Borobudur 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Barong, Tongkok, Kutai Barat", instansi: "PT. ASG", lat: -0.226, lng: 115.7, foto: "pemotretan udara di Barong, Tongkok, Kutai Barat 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Muara Lawa, Kutai Barat", instansi: "PT. ASG", lat: -0.428, lng: 115.824, foto: "pemotretan udara di Muara Lawa, Kutai Barat 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.655, lng: 103.774, foto: "pengukuran LiDAR di Muara Enim, Sumatera Selatan 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Lawe-lawe, Balikpapan", instansi: "PERTAMINA", lat: -1.312, lng: 116.79, foto: "pengukuran LiDAR di Lawe-lawe, Balikpapan 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Sungai Gajah Wong, Yogyakarta", instansi: "UCY", lat: -7.808, lng: 110.395, foto: "pemotretan udara di Sungai Gajah Wong, Yogyakarta 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Samarinda", instansi: "PT. Hexa Internasional", lat: -0.502, lng: 117.153, foto: "pengukuran LiDAR di Samarinda 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.205, lng: 111.092, foto: "pemotretan udara di Pacitan, Jawa Timur 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.19, lng: 111.1, foto: "pengukuran LiDAR di Pacitan, Jawa Timur 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pulau Bintan, Tanjung Pinang", instansi: "SANDBOX", lat: 0.917, lng: 104.466, foto: "pemotretan udara di Pulau Bintan, Tanjung Pinang 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.63, lng: 103.78, foto: "pengukuran LiDAR di Muara Enim, Sumatera Selatan 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "ANUGERAH GLOBAL SUPERINTENDING", lat: -10.177, lng: 123.607, foto: "pengukuran topografi di Kupang, Nusa Tenggara Timur 2022.png", driveId: "" },
-            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "PLTU Kupang", lat: -10.16, lng: 123.59, foto: "pengukuran topografi di Kupang, Nusa Tenggara Timur 2022.png", driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Candi Borobudur", instansi: "UGM", lat: -7.607, lng: 110.203, driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Barong, Tongkok, Kutai Barat", instansi: "PT. ASG", lat: -0.226, lng: 115.7, driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Muara Lawa, Kutai Barat", instansi: "PT. ASG", lat: -0.428, lng: 115.824, driveId: "" },
+            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.655, lng: 103.774, driveId: "" },
+            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Lawe-lawe, Balikpapan", instansi: "PERTAMINA", lat: -1.312, lng: 116.79, driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Sungai Gajah Wong, Yogyakarta", instansi: "UCY", lat: -7.808, lng: 110.395, driveId: "" },
+            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Samarinda", instansi: "PT. Hexa Internasional", lat: -0.502, lng: 117.153, driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.205, lng: 111.092, driveId: "" },
+            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.19, lng: 111.1, driveId: "" },
+            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pulau Bintan, Tanjung Pinang", instansi: "SANDBOX", lat: 0.917, lng: 104.466, driveId: "" },
+            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.63, lng: 103.78, driveId: "" },
+            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "ANUGERAH GLOBAL SUPERINTENDING", lat: -10.177, lng: 123.607, driveId: "" },
+            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "PLTU Kupang", lat: -10.16, lng: 123.59, driveId: "" },
 
             // --- 2023 ---
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo Utara", instansi: "SANDBOX", lat: 0.888, lng: 122.88, foto: "pemotretan udara di Gorontalo Utara 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Buru, Maluku", instansi: "BPN Buru", lat: -3.328, lng: 127.1, foto: "pemotretan udara di Buru, Maluku 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Maluku", instansi: "BPN Maluku", lat: -3.2, lng: 130.0, foto: "pemotretan udara di Maluku 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.05, lng: 113.84, foto: "pemotretan udara di Gunung Mas, Kalimantan Tengah 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT KBB", lat: -1.61, lng: 103.613, foto: "pemotretan udara di Jambi 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pamekasan, Jawa Timur", instansi: "BPN Pamekasan", lat: -7.161, lng: 113.482, foto: "pemotretan udara di Pamekasan, Jawa Timur 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Minggir, Sleman", instansi: "BPN Sleman", lat: -7.731, lng: 110.252, foto: "pemotretan udara di Minggir, Sleman 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Cilacap, Jawa Tengah", instansi: "BPN Cilacap", lat: -7.718, lng: 109.015, foto: "pemotretan udara di Cilacap, Jawa Tengah 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "BPN Gunung Kidul", lat: -7.962, lng: 110.601, foto: "pemotretan udara di Gunung Kidul, Yogyakarta 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "BPN Lampung Barat", lat: -5.15, lng: 104.19, foto: "pemotretan udara di Lampung Barat 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo", instansi: "BPN Gorontalo", lat: 0.54, lng: 123.06, foto: "pemotretan udara di Gorontalo 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pringsewu, Lampung", instansi: "BPN Lampung", lat: -5.358, lng: 104.974, foto: "pemotretan udara di Pringsewu, Lampung 2023.png", driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.07, lng: 113.85, foto: "pemotretan udara di Gunung Mas, Kalimantan Tengah 2023.png", driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo Utara", instansi: "SANDBOX", lat: 0.888, lng: 122.88, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Buru, Maluku", instansi: "BPN Buru", lat: -3.328, lng: 127.1, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Maluku", instansi: "BPN Maluku", lat: -3.2, lng: 130.0, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.05, lng: 113.84, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT KBB", lat: -1.61, lng: 103.613, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pamekasan, Jawa Timur", instansi: "BPN Pamekasan", lat: -7.161, lng: 113.482, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Minggir, Sleman", instansi: "BPN Sleman", lat: -7.731, lng: 110.252, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Cilacap, Jawa Tengah", instansi: "BPN Cilacap", lat: -7.718, lng: 109.015, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "BPN Gunung Kidul", lat: -7.962, lng: 110.601, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "BPN Lampung Barat", lat: -5.15, lng: 104.19, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo", instansi: "BPN Gorontalo", lat: 0.54, lng: 123.06, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pringsewu, Lampung", instansi: "BPN Lampung", lat: -5.358, lng: 104.974, driveId: "" },
+            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.07, lng: 113.85, driveId: "" },
 
             // --- 2024 ---
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Lampung Timur, Lampung", instansi: "BPN Lampung Timur", lat: -5.11, lng: 105.68, foto: "pemotretan udara di Lampung Timur, Lampung 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Pesisir Barat, Lampung", instansi: "BPN Pesisir Barat", lat: -5.192, lng: 103.858, foto: "pemotretan udara di Pesisir Barat, Lampung 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Godean, Sleman", instansi: "BPN Sleman", lat: -7.77, lng: 110.29, foto: "pemotretan udara di Godean, Sleman 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "KJSB Shinta Aprilia Indarwati", lat: -7.97, lng: 110.61, foto: "pemotretan udara di Gunung Kidul, Yogyakarta 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sleman, Yogyakarta", instansi: "BPN Sleman", lat: -7.715, lng: 110.355, foto: "pemotretan udara di Sleman, Yogyakarta 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Stake Out", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.31, lng: 110.17, foto: "pengukuran stake out di DI Tingal, Temanggung 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.315, lng: 110.175, foto: "pemotretan udara di DI Tingal, Temanggung 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Way Kanan, Lampung", instansi: "BPN Way Kanan", lat: -4.5, lng: 104.52, foto: "pemotretan udara di Way Kanan, Lampung 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Kalimantan Tengah", lat: -1.03, lng: 113.83, foto: "pemotretan udara di Gunung Mas, Kalimantan Tengah 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sempor, Kebumen", instansi: "BBWSSO", lat: -7.568, lng: 109.581, foto: "pemotretan udara di Sempor, Kebumen 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Hidrografi", lokasi: "Karawang", instansi: "Karta Bhumi Nusantara", lat: -6.305, lng: 107.301, foto: "survei hidrografi di Karawang 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "Topografi", lokasi: "Gumuk Pasir, Parangtritis", instansi: "Rekan", lat: -8.02, lng: 110.323, foto: "pengukuran topografi di Gumuk Pasir, Parangtritis 2024.png", driveId: "" },
-            { tahun: 2024, pekerjaan: "LOD 1", lokasi: "Karanganyar, Jawa Tengah", instansi: "BPN Karanganyar", lat: -7.597, lng: 110.951, foto: "pembuatan peta Level of Detail 1 (LOD 1) di Karanganyar, Jawa Tengah 2024.png", driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Lampung Timur, Lampung", instansi: "BPN Lampung Timur", lat: -5.11, lng: 105.68, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Pesisir Barat, Lampung", instansi: "BPN Pesisir Barat", lat: -5.192, lng: 103.858, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Godean, Sleman", instansi: "BPN Sleman", lat: -7.77, lng: 110.29, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "KJSB Shinta Aprilia Indarwati", lat: -7.97, lng: 110.61, driveId: "1t-SQLAgLJKtuscrP8klt4kYERHsyBUBs" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sleman, Yogyakarta", instansi: "BPN Sleman", lat: -7.715, lng: 110.355, driveId: "" },
+            { tahun: 2024, pekerjaan: "Stake Out", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.31, lng: 110.17, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.315, lng: 110.175, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Way Kanan, Lampung", instansi: "BPN Way Kanan", lat: -4.5, lng: 104.52, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Kalimantan Tengah", lat: -1.03, lng: 113.83, driveId: "" },
+            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sempor, Kebumen", instansi: "BBWSSO", lat: -7.568, lng: 109.581, driveId: "" },
+            { tahun: 2024, pekerjaan: "Hidrografi", lokasi: "Karawang", instansi: "Karta Bhumi Nusantara", lat: -6.305, lng: 107.301, driveId: "" },
+            { tahun: 2024, pekerjaan: "Topografi", lokasi: "Gumuk Pasir, Parangtritis", instansi: "Rekan", lat: -8.02, lng: 110.323, driveId: "" },
+            { tahun: 2024, pekerjaan: "LOD 1", lokasi: "Karanganyar, Jawa Tengah", instansi: "BPN Karanganyar", lat: -7.597, lng: 110.951, driveId: "" },
 
             // --- 2025 ---
-            { tahun: 2025, pekerjaan: "Hidrografi", lokasi: "Banjarmasin", instansi: "Obsluzivo Intiloc Indonesia", lat: -3.319, lng: 114.59, foto: "survei hidrografi di Banjarmasin 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Soil Test", lokasi: "Yogyakarta", instansi: "Rekan", lat: -7.795, lng: 110.369, foto: "pengujian tanah (soil test) di Yogyakarta 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Batam, Kepri", instansi: "PT Geoservices", lat: 1.13, lng: 104.053, foto: "pemotretan udara di Batam, Kepri 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Padang", instansi: "PT Geoservices", lat: -0.947, lng: 100.417, foto: "pemotretan udara di Padang 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT Geoservices", lat: -1.6, lng: 103.6, foto: "pemotretan udara di Jambi 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Batam", instansi: "Rekan", lat: 1.11, lng: 104.03, foto: "survei batimetri di Batam 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Pemotretan Udara UAV", lokasi: "Pesisir Barat, Lampung", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.21, lng: 103.85, foto: "pemotretan udara menggunakan UAV di Kabupaten Pesisir Barat, Lampung 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.14, lng: 104.18, foto: "pemotretan udara di Lampung Barat 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Kapuas", instansi: "PT PETA", lat: -2.766, lng: 114.385, foto: "survei batimetri di Kapuas 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "DEM / Pemetaan POS", lokasi: "Sungai Progo, Opak, dan Serang (Bantul, Sleman, Klaten)", instansi: "BBWS-SO", lat: -7.8, lng: 110.4, foto: "pengukuran dan pemetaan di kawasan Sungai Progo, Opak, dan Serang (POS) yang terletak di Kabupaten Bantul, Sleman, dan Klaten 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "BBWS-SO", lat: -7.718, lng: 110.22, foto: "pengukuran pekerjaan detail desain Daerah Irigasi Kalibawang yang terletak di Kabupaten Kulon Progo, Daerah Istimewa Yogyakarta 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, foto: "pengukuran stakeout tapak batas di Daerah Irigasi Tingal, Kabupaten Temanggung, Jawa Tengah 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, foto: "Foto Tegak di Kabupaten Rembang 2025.png", driveId: "" },
-            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, foto: "pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png", driveId: "" }
+            { tahun: 2025, pekerjaan: "Hidrografi", lokasi: "Banjarmasin", instansi: "Obsluzivo Intiloc Indonesia", lat: -3.319, lng: 114.59, driveId: "" },
+            { tahun: 2025, pekerjaan: "Soil Test", lokasi: "Yogyakarta", instansi: "Rekan", lat: -7.795, lng: 110.369, driveId: "" },
+            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Batam, Kepri", instansi: "PT Geoservices", lat: 1.13, lng: 104.053, driveId: "" },
+            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Padang", instansi: "PT Geoservices", lat: -0.947, lng: 100.417, driveId: "" },
+            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT Geoservices", lat: -1.6, lng: 103.6, driveId: "" },
+            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Batam", instansi: "Rekan", lat: 1.11, lng: 104.03, driveId: "" },
+            { tahun: 2025, pekerjaan: "Pemotretan Udara UAV", lokasi: "Pesisir Barat, Lampung", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.21, lng: 103.85, driveId: "13DelqhVpjAnVPw4UiyNwbGgsLzhGnFYu" },
+            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.14, lng: 104.18, driveId: "" },
+            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Kapuas", instansi: "PT PETA", lat: -2.766, lng: 114.385, driveId: "" },
+            { tahun: 2025, pekerjaan: "DEM / Pemetaan POS", lokasi: "Sungai Progo, Opak, dan Serang (Bantul, Sleman, Klaten)", instansi: "BBWS-SO", lat: -7.8, lng: 110.4, driveId: "1ReOT2vVfSr91qns4d4YdOvavGICJhGiu" },
+            { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "BBWS-SO", lat: -7.718, lng: 110.22, driveId: "18ku4dVDRy6S43k0lCTBwwo6Dq1NJYwJh" },
+            { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, driveId: "14UVp-NciToXL1QMNDWwhE4ZrGh3aVogZ" },
+            { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, driveId: "1xW1M8vm_TE6RzQA2oZMa6PY6lM2e3Rwm" },
+            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "1P1xF3YClr3_AsM_oXm8NUIrHTflOjUsw" }
         ];
 
         // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
@@ -389,7 +245,7 @@
             const kategori = getCategory(item.pekerjaan);
             const warna = colorMap[kategori];
 
-            item.marker = L.marker([item.lat, item.lng], {
+            L.marker([item.lat, item.lng], {
                 icon: createPinIcon(warna)
             })
             .addTo(map)
@@ -422,8 +278,6 @@
 
         legend.addTo(map);
 
-        // Ambil daftar foto dari folder Google Drive secara otomatis.
-        loadDriveFiles();
     </script>
 </body>
 </html>

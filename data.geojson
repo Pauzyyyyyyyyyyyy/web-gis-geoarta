@@ -1,4 +1,3 @@
-// data.geojson (disimpan di GitHub)
 {
   "type": "FeatureCollection",
   "features": [
@@ -7,8 +6,8 @@
       "geometry": { "type": "Point", "coordinates": [106.8, -6.2] },
       "properties": {
         "nama": "Monas",
-        "thumb_url": "https://pub-xxx.r2.dev/monas_thumb.jpg", // Foto kecil
-        "foto_url": "https://pub-xxx.r2.dev/monas_full.jpg"    // Foto besar
+        "thumb_url": "https://pub-xxx.r2.dev/monas_thumb.jpg", 
+        "foto_url": "https://pub-xxx.r2.dev/monas_full.jpg"    
       }
     }
   ]

@@ -1,210 +1,131 @@
-/* ============================================
-   STYLE.CSS - Web GIS PT Geoarta Sinar Mandala
-   ============================================ */
-
-/* Reset & Base */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
 body {
     display: flex;
     flex-direction: column;
     height: 100vh;
 }
-
-/* ===== HEADER ===== */
 header {
-    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%);
+    background-color: #1a365d;
     color: white;
-    padding: 15px 25px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    padding: 15px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     z-index: 1000;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
 }
-
-header .title h1 {
-    font-size: 1.3rem;
-    margin-bottom: 2px;
+header h1 {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
 }
-
-header .title p {
-    font-size: 0.8rem;
+header p {
+    font-size: 0.85rem;
     color: #cbd5e0;
 }
-
-header .stats {
-    background: rgba(255,255,255,0.15);
-    padding: 8px 15px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    backdrop-filter: blur(5px);
-}
-
-/* ===== MAP ===== */
 #map {
     flex: 1;
     width: 100%;
     z-index: 1;
 }
 
-/* ===== POPUP ===== */
+/* Popup Styling */
 .leaflet-popup-content-wrapper {
-    border-radius: 12px;
-    padding: 0;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    overflow: hidden;
+    border-radius: 8px;
+    padding: 5px;
 }
-
-.leaflet-popup-content {
-    margin: 0;
-    padding: 0;
-    min-width: 280px;
-}
-
 .popup-card {
-    width: 100%;
+    width: 250px;
 }
-
-.popup-header {
-    background: linear-gradient(135deg, #1a365d, #2b6cb0);
-    color: white;
-    padding: 12px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.popup-header .badge-year {
-    background: rgba(255,255,255,0.2);
-    padding: 2px 12px;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: bold;
-}
-
-.popup-body {
-    padding: 12px 15px 15px;
-}
-
-.popup-body h3 {
+.popup-card h3 {
     color: #2b6cb0;
     font-size: 1rem;
     margin-bottom: 6px;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 4px;
 }
-
-.popup-body .popup-info {
-    font-size: 0.82rem;
-    line-height: 1.6;
+.popup-info {
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+.popup-info strong {
     color: #4a5568;
 }
-
-.popup-body .popup-info strong {
-    color: #2d3748;
-}
-
-/* ===== POPUP IMAGE ===== */
 .popup-img-container {
     width: 100%;
-    height: 180px;
-    background: #edf2f7;
+    height: 140px;
+    background-color: #edf2f7;
+    border-radius: 6px;
     overflow: hidden;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top: 1px solid #e2e8f0;
-    position: relative;
+    border: 1px dashed #cbd5e0;
 }
-
 .popup-img-container img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
-
-.popup-img-container .img-placeholder {
+.img-placeholder {
     font-size: 0.75rem;
     color: #718096;
     text-align: center;
-    padding: 15px;
+    padding: 10px;
+}
+.badge-year {
+    display: inline-block;
+    background-color: #3182ce;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-bottom: 6px;
 }
 
-.popup-img-container .img-placeholder .icon {
-    font-size: 2rem;
-    display: block;
-    margin-bottom: 5px;
-}
-
-/* ===== CUSTOM MARKER PIN ===== */
+/* Custom SVG Pin Marker Styling */
 .custom-pin-icon {
     background: transparent;
     border: none;
 }
-
 .pin-svg {
-    filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.4));
+    filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.4));
     transition: transform 0.2s ease;
-    cursor: pointer;
 }
-
 .pin-svg:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
 }
 
-/* ===== LEGEND ===== */
+/* Legenda Styling (Kanan Atas) */
 .legend {
-    background: rgba(255,255,255,0.95);
-    padding: 14px 18px;
-    line-height: 22px;
+    background: white;
+    padding: 12px 15px;
+    line-height: 20px;
     color: #333;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-    font-size: 0.8rem;
-    backdrop-filter: blur(10px);
-    min-width: 180px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    font-size: 0.82rem;
 }
-
 .legend h4 {
-    margin: 0 0 10px 0;
-    font-size: 0.85rem;
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
     color: #1a365d;
-    border-bottom: 2px solid #e2e8f0;
-    padding-bottom: 6px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 4px;
 }
-
 .legend-item {
     display: flex;
     align-items: center;
-    margin-bottom: 5px;
-    padding: 2px 4px;
-    border-radius: 4px;
+    margin-bottom: 6px;
 }
-
-.legend-item:hover {
-    background: #f7fafc;
-}
-
 .legend-item:last-child {
     margin-bottom: 0;
 }
-
 .legend-pin-icon {
-    width: 18px;
-    height: 24px;
-    margin-right: 10px;
-    flex-shrink: 0;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 600px) {
-    header .title h1 { font-size: 1rem; }
-    header .stats { font-size: 0.7rem; padding: 4px 10px; }
-    .leaflet-popup-content { min-width: 240px; }
-    .popup-img-container { height: 150px; }
+    width: 16px;
+    height: 20px;
+    margin-right: 8px;
+    display: inline-block;
 }
